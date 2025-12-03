@@ -7,20 +7,20 @@ import {
 import { ReactNode, useEffect, useCallback } from 'react';
 import { Connector } from 'wagmi';
 
-// Define Arbitrum Sepolia chain
-const arbitrumSepolia = {
-  id: 421614,
-  name: 'Arbitrum Sepolia',
+// Define Story Aeneid Testnet chain
+const storyAeneid = {
+  id: 1315,
+  name: 'Story Aeneid Testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'ETH',
-    symbol: 'ETH',
+    name: 'IP',
+    symbol: 'IP',
   },
   rpcUrls: {
-    default: { http: ['https://sepolia-rollup.arbitrum.io/rpc'] },
+    default: { http: ['https://aeneid.storyrpc.io'] },
   },
   blockExplorers: {
-    default: { name: 'Arbiscan', url: 'https://sepolia.arbiscan.io' },
+    default: { name: 'StoryScan', url: 'https://aeneid.storyscan.io' },
   },
   testnet: true,
 } as const;
@@ -32,7 +32,7 @@ interface WalletConnectHookReturnType {
   connector: any;
   connect: (connectorId: string) => Promise<{ success: boolean; error?: string }>;
   disconnect: () => Promise<void>;
-  switchToArbitrumSepolia: () => Promise<{ success: boolean; message: string }>;
+  switchToStoryAeneid: () => Promise<{ success: boolean; message: string }>;
   error: Error | null;
   isConnecting: boolean;
 }
@@ -47,14 +47,14 @@ export const WALLET_IDS = {
   METAMASK: 'metaMask',
 } as const;
 
-// List of supported chains - only Arbitrum Sepolia
-export const supportedChains = [arbitrumSepolia] as const;
+// List of supported chains - only Story Aeneid Testnet
+export const supportedChains = [storyAeneid] as const;
 
-// Configure RPC endpoints - only Arbitrum Sepolia RPC endpoint
+// Configure RPC endpoints - only Story Aeneid Testnet RPC endpoint
 export const config = createConfig({
   chains: supportedChains,
   transports: {
-    [arbitrumSepolia.id]: http('https://sepolia-rollup.arbitrum.io/rpc'), // Arbitrum Sepolia RPC endpoint
+    [storyAeneid.id]: http('https://aeneid.storyrpc.io'), // Story Aeneid Testnet RPC endpoint
   },
   connectors: [
     // MetaMask
@@ -103,48 +103,48 @@ export function useWalletConnect(): WalletConnectHookReturnType {
     }
   }, [disconnect]);
   
-  // Function to switch to Arbitrum Sepolia network
-  const switchToArbitrumSepolia = useCallback(async () => {
+  // Function to switch to Story Aeneid Testnet network
+  const switchToStoryAeneid = useCallback(async () => {
     if (typeof window === 'undefined' || !window.ethereum) {
       throw new Error('MetaMask is not installed!');
     }
 
     try {
-      // First, try to switch to Arbitrum Sepolia (421614)
+      // First, try to switch to Story Aeneid Testnet (1315)
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x66eee' }], // 421614 in hex
+        params: [{ chainId: '0x523' }], // 1315 in hex
       });
-      return { success: true, message: 'Switched to Arbitrum Sepolia' };
+      return { success: true, message: 'Switched to Story Aeneid Testnet' };
     } catch (switchError: any) {
       // This error code indicates that the chain has not been added to MetaMask
       if (switchError.code === 4902) {
         try {
-          // Add Arbitrum Sepolia network
+          // Add Story Aeneid Testnet network
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: '0x66eee', // 421614 in hex
-                chainName: 'Arbitrum Sepolia',
+                chainId: '0x523', // 1315 in hex
+                chainName: 'Story Aeneid Testnet',
                 nativeCurrency: {
-                  name: 'ETH',
-                  symbol: 'ETH',
+                  name: 'IP',
+                  symbol: 'IP',
                   decimals: 18,
                 },
-                rpcUrls: ['https://sepolia-rollup.arbitrum.io/rpc'],
-                blockExplorerUrls: ['https://sepolia.arbiscan.io'],
+                rpcUrls: ['https://aeneid.storyrpc.io'],
+                blockExplorerUrls: ['https://aeneid.storyscan.io'],
               },
             ],
           });
-          return { success: true, message: 'Added and switched to Arbitrum Sepolia' };
+          return { success: true, message: 'Added and switched to Story Aeneid Testnet' };
         } catch (addError) {
-          console.error('Failed to add Arbitrum Sepolia network:', addError);
-          throw new Error('Failed to add Arbitrum Sepolia network. Please add it manually in MetaMask.');
+          console.error('Failed to add Story Aeneid Testnet network:', addError);
+          throw new Error('Failed to add Story Aeneid Testnet network. Please add it manually in MetaMask.');
         }
       } else {
-        console.error('Failed to switch to Arbitrum Sepolia network:', switchError);
-        throw new Error('Failed to switch to Arbitrum Sepolia network. Please switch manually in MetaMask.');
+        console.error('Failed to switch to Story Aeneid Testnet network:', switchError);
+        throw new Error('Failed to switch to Story Aeneid Testnet network. Please switch manually in MetaMask.');
       }
     }
   }, []);
@@ -206,7 +206,7 @@ export function useWalletConnect(): WalletConnectHookReturnType {
     connector: activeConnector || undefined,
     connect: connectWallet,
     disconnect: handleDisconnect,
-    switchToArbitrumSepolia, // Add the new function to the return object
+    switchToStoryAeneid, // Add the new function to the return object
     error: connectError || null,
     isConnecting: isPending,
   };
@@ -223,8 +223,8 @@ function ConnectionLogger() {
       chainId,
       connector: connector?.name,
       // Add more detailed network information
-      isArbitrumSepolia: chainId === 421614,
-      networkName: chainId === 421614 ? 'Arbitrum Sepolia' : 
+      isStoryAeneid: chainId === 1315,
+      networkName: chainId === 1315 ? 'Story Aeneid Testnet' : 
                   chainId === 1 ? 'Ethereum Mainnet' : 
                   chainId === 137 ? 'Polygon Mainnet' : 
                   chainId === 80001 ? 'Polygon Mumbai Testnet' : 

@@ -24,14 +24,14 @@ function Header() {
     connector,
     connect,
     disconnect,
-    switchToArbitrumSepolia,
+    switchToStoryAeneid,
     error,
     isConnecting,
   } = useWalletConnect();
 
-  // Check if user is on the correct Arbitrum Sepolia network
-  const isArbitrumSepolia = chainId === 421614;
-  const networkName = chainId === 421614 ? 'Arbitrum Sepolia' : 
+  // Check if user is on the correct Story Aeneid Testnet network
+  const isStoryAeneid = chainId === 1315;
+  const networkName = chainId === 1315 ? 'Story Aeneid Testnet' : 
                      chainId === 1 ? 'Ethereum Mainnet' : 
                      chainId === 137 ? 'Polygon Mainnet' : 
                      chainId === 80001 ? 'Polygon Mumbai Testnet' : 
@@ -87,19 +87,19 @@ const handleDisconnectWallet = useCallback(async () => {
   }
 }, [disconnect]);
   
-  // Function to switch to Arbitrum Sepolia network
-  const handleSwitchToArbitrumSepolia = useCallback(async () => {
+  // Function to switch to Story Aeneid Testnet network
+  const handleSwitchToStoryAeneid = useCallback(async () => {
     try {
       setIsConnectingWallet(true);
-      const result = await switchToArbitrumSepolia();
+      const result = await switchToStoryAeneid();
       console.log(result.message);
     } catch (error: any) {
-      console.error('Error switching to Arbitrum Sepolia network:', error);
+      console.error('Error switching to Story Aeneid Testnet network:', error);
       alert(error.message || 'Failed to switch network');
     } finally {
       setIsConnectingWallet(false);
     }
-  }, [switchToArbitrumSepolia]);
+  }, [switchToStoryAeneid]);
 
   // Open wallet modal
   const openWalletModal = useCallback(() => {
@@ -132,7 +132,7 @@ const handleDisconnectWallet = useCallback(async () => {
       <div className="flex items-center gap-4">
         {isConnected && address ? (
           <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${isArbitrumSepolia ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+            <div className={`w-2 h-2 rounded-full ${isStoryAeneid ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
             <div className="text-gray-700 font-medium">
               <span className="text-sm">Connected:</span> {formatAddress(address)}
               {connector?.name && (
@@ -140,7 +140,7 @@ const handleDisconnectWallet = useCallback(async () => {
                   ({connector.name})
                 </span>
               )}
-              {!isArbitrumSepolia && (
+              {!isStoryAeneid && (
                 <div className="flex items-center gap-1 mt-1">
                   <AlertTriangle className="h-3 w-3 text-yellow-500" />
                   <span className="text-xs text-yellow-600">
@@ -160,11 +160,11 @@ const handleDisconnectWallet = useCallback(async () => {
         <div className="flex items-center gap-2">
           {isConnected ? (
             <>
-              {!isArbitrumSepolia && (
+              {!isStoryAeneid && (
                 <Button 
                   variant="destructive" 
                   size="sm" 
-                  onClick={handleSwitchToArbitrumSepolia}
+                  onClick={handleSwitchToStoryAeneid}
                   disabled={isConnecting || isConnectingWallet}
                   className="flex items-center gap-2"
                 >
@@ -173,7 +173,7 @@ const handleDisconnectWallet = useCallback(async () => {
                   ) : (
                     <AlertTriangle className="h-4 w-4" />
                   )}
-                  Switch to Arbitrum
+                  Switch to Story
                 </Button>
               )}
               <DropdownMenu>

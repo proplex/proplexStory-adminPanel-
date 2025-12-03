@@ -60,14 +60,14 @@ export const useWalletConnection = () => {
         throw new Error("Wallet address mismatch. Please reconnect your MetaMask wallet.");
       }
 
-      // Verify we're connected to the correct network (Arbitrum Sepolia)
+      // Verify we're connected to the correct network (Story Aeneid Testnet)
       const network = await provider.getNetwork();
       console.log('Connected network:', network);
       
-      // Arbitrum Sepolia = 421614
-      if (network.chainId !== 421614) {
+      // Story Aeneid Testnet = 1315
+      if (network.chainId !== 1315) {
         console.error('Incorrect network detected:', network);
-        throw new Error(`Please switch to Arbitrum Sepolia Network (ID: 421614). Currently connected to chain ID: ${network.chainId}`);
+        throw new Error(`Please switch to Story Aeneid Testnet Network (ID: 1315). Currently connected to chain ID: ${network.chainId}`);
       }
 
       console.log('Wallet connection successful:', {
@@ -85,48 +85,48 @@ export const useWalletConnection = () => {
     }
   }, [address, isConnected, isMetaMaskConnected, walletClient, connectorName, connectorId]);
   
-  // Function to switch to Arbitrum Sepolia network
-  const switchToArbitrumSepolia = useCallback(async () => {
+  // Function to switch to Story Aeneid Testnet network
+  const switchToStoryAeneid = useCallback(async () => {
     if (typeof window === 'undefined' || !(window as any).ethereum) {
       throw new Error('MetaMask is not installed!');
     }
 
     try {
-      // First, try to switch to Arbitrum Sepolia (421614)
+      // First, try to switch to Story Aeneid Testnet (1315)
       await (window as any).ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x66eee' }], // 421614 in hex
+        params: [{ chainId: '0x523' }], // 1315 in hex
       });
-      return { success: true, message: 'Switched to Arbitrum Sepolia' };
+      return { success: true, message: 'Switched to Story Aeneid Testnet' };
     } catch (switchError: any) {
       // This error code indicates that the chain has not been added to MetaMask
       if (switchError.code === 4902) {
         try {
-          // Add Arbitrum Sepolia network
+          // Add Story Aeneid Testnet network
           await (window as any).ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: '0x66eee', // 421614 in hex
-                chainName: 'Arbitrum Sepolia',
+                chainId: '0x523', // 1315 in hex
+                chainName: 'Story Aeneid Testnet',
                 nativeCurrency: {
-                  name: 'ETH',
-                  symbol: 'ETH',
+                  name: 'IP',
+                  symbol: 'IP',
                   decimals: 18,
                 },
-                rpcUrls: ['https://sepolia-rollup.arbitrum.io/rpc'],
-                blockExplorerUrls: ['https://sepolia.arbiscan.io'],
+                rpcUrls: ['https://aeneid.storyrpc.io'],
+                blockExplorerUrls: ['https://aeneid.storyscan.io'],
               },
             ],
           });
-          return { success: true, message: 'Added and switched to Arbitrum Sepolia' };
+          return { success: true, message: 'Added and switched to Story Aeneid Testnet' };
         } catch (addError) {
-          console.error('Failed to add Arbitrum Sepolia network:', addError);
-          throw new Error('Failed to add Arbitrum Sepolia network. Please add it manually in MetaMask.');
+          console.error('Failed to add Story Aeneid Testnet network:', addError);
+          throw new Error('Failed to add Story Aeneid Testnet network. Please add it manually in MetaMask.');
         }
       } else {
-        console.error('Failed to switch to Arbitrum Sepolia network:', switchError);
-        throw new Error('Failed to switch to Arbitrum Sepolia network. Please switch manually in MetaMask.');
+        console.error('Failed to switch to Story Aeneid Testnet network:', switchError);
+        throw new Error('Failed to switch to Story Aeneid Testnet network. Please switch manually in MetaMask.');
       }
     }
   }, []);
@@ -138,6 +138,6 @@ export const useWalletConnection = () => {
     connectorId,
     isMetaMaskConnected,
     getProvider,
-    switchToArbitrumSepolia // Add the new function to the return object
+    switchToStoryAeneid // Add the new function to the return object
   };
 };

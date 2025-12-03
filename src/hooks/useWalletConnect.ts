@@ -73,7 +73,7 @@ export const useWallet = () => {
       console.log('Initiating connection with MetaMask...');
       await connect({ 
         connector: metaMaskConnector
-        // Removed hardcoded chainId: 1 to allow connection to Arbitrum Sepolia network
+        // Removed hardcoded chainId: 1 to allow connection to Story Aeneid Testnet network
       });
       
     } catch (error) {
@@ -82,48 +82,48 @@ export const useWallet = () => {
     }
   }, [connect, connectors]);
 
-  // Function to switch to Arbitrum Sepolia network
-  const switchToArbitrumSepolia = useCallback(async () => {
+  // Function to switch to Story Aeneid Testnet network
+  const switchToStoryAeneid = useCallback(async () => {
     if (typeof window === 'undefined' || !(window as any).ethereum) {
       throw new Error('MetaMask is not installed!');
     }
 
     try {
-      // First, try to switch to Arbitrum Sepolia (421614)
+      // First, try to switch to Story Aeneid Testnet (1315)
       await (window as any).ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x66eee' }], // 421614 in hex
+        params: [{ chainId: '0x523' }], // 1315 in hex
       });
-      return { success: true, message: 'Switched to Arbitrum Sepolia' };
+      return { success: true, message: 'Switched to Story Aeneid Testnet' };
     } catch (switchError: any) {
       // This error code indicates that the chain has not been added to MetaMask
       if (switchError.code === 4902) {
         try {
-          // Add Arbitrum Sepolia network
+          // Add Story Aeneid Testnet network
           await (window as any).ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: '0x66eee', // 421614 in hex
-                chainName: 'Arbitrum Sepolia',
+                chainId: '0x523', // 1315 in hex
+                chainName: 'Story Aeneid Testnet',
                 nativeCurrency: {
-                  name: 'ETH',
-                  symbol: 'ETH',
+                  name: 'IP',
+                  symbol: 'IP',
                   decimals: 18,
                 },
-                rpcUrls: ['https://sepolia-rollup.arbitrum.io/rpc'],
-                blockExplorerUrls: ['https://sepolia.arbiscan.io'],
+                rpcUrls: ['https://aeneid.storyrpc.io'],
+                blockExplorerUrls: ['https://aeneid.storyscan.io'],
               },
             ],
           });
-          return { success: true, message: 'Added and switched to Arbitrum Sepolia' };
+          return { success: true, message: 'Added and switched to Story Aeneid Testnet' };
         } catch (addError) {
-          console.error('Failed to add Arbitrum Sepolia network:', addError);
-          throw new Error('Failed to add Arbitrum Sepolia network. Please add it manually in MetaMask.');
+          console.error('Failed to add Story Aeneid Testnet network:', addError);
+          throw new Error('Failed to add Story Aeneid Testnet network. Please add it manually in MetaMask.');
         }
       } else {
-        console.error('Failed to switch to Arbitrum Sepolia network:', switchError);
-        throw new Error('Failed to switch to Arbitrum Sepolia network. Please switch manually in MetaMask.');
+        console.error('Failed to switch to Story Aeneid Testnet network:', switchError);
+        throw new Error('Failed to switch to Story Aeneid Testnet network. Please switch manually in MetaMask.');
       }
     }
   }, []);
@@ -146,7 +146,7 @@ export const useWallet = () => {
     chainId,
     connect: connectWallet,
     disconnect,
-    switchToArbitrumSepolia, // Add the new function to the return object
+    switchToStoryAeneid, // Add the new function to the return object
     isConnecting,
     error: connectError || disconnectError,
     connector: connector?.name

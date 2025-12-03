@@ -47,7 +47,7 @@ export const useSpvApi = () => {
     connectorName,
     isMetaMaskConnected,
     getProvider,
-    switchToArbitrumSepolia // Add this new function
+    switchToStoryAeneid // Add this new function
   } = useWalletConnection();
 
   const initializeSDK = useCallback(async () => {
