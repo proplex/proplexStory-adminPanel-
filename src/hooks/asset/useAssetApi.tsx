@@ -142,7 +142,7 @@ export const useAssetApi = () => {
         );
 
         setStatus("success");
-        toast.success("Asset created and deployed on blockchain successfully");
+        toast.success("Asset created successfully");
 
         return {
           ...res.data,

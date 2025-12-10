@@ -70,14 +70,14 @@ export const useSpvApi = () => {
         throw new Error("Wallet address mismatch. Please reconnect your MetaMask wallet.");
       }
 
-      // Verify we're connected to the correct network (Arbitrum Sepolia)
+      // Verify we're connected to the correct network (Story Aeneid Testnet)
       const network = await provider.getNetwork();
       console.log('Connected network:', network);
       
-      // Arbitrum Sepolia = 421614
-      if (network.chainId !== 421614) {
+      // Story Aeneid Testnet = 1315
+      if (network.chainId !== 1315) {
         console.error('Incorrect network detected:', network);
-        throw new Error(`Please switch to Arbitrum Sepolia Network (ID: 421614). Currently connected to chain ID: ${network.chainId}`);
+        throw new Error(`Please switch to Story Aeneid Testnet Network (ID: 1315). Currently connected to chain ID: ${network.chainId}`);
       }
 
       // For proplex, we'll return the provider and signer directly
@@ -126,7 +126,7 @@ export const useSpvApi = () => {
         throw new Error("Please connect your MetaMask wallet first");
       }
 
-      // 2. Check if user is on the correct Arbitrum Sepolia network
+      // 2. Check if user is on the correct Story Aeneid Testnet network
       // Note: We can't directly access chainId here, so we'll check during provider initialization
       console.log("Wallet connected:", { address, isConnected });
 
@@ -135,14 +135,14 @@ export const useSpvApi = () => {
       const { provider, signer } = await initializeSDK();
       console.log("Provider and signer initialized successfully");
       
-      // Verify we're connected to the correct network (Arbitrum Sepolia)
+      // Verify we're connected to the correct network (Story Aeneid Testnet)
       const network = await provider.getNetwork();
       console.log('Connected network:', network);
       
-      // Arbitrum Sepolia = 421614
-      if (network.chainId !== 421614) {
+      // Story Aeneid Testnet = 1315
+      if (network.chainId !== 1315) {
         console.error('Incorrect network detected:', network);
-        throw new Error(`Please switch to Arbitrum Sepolia Network (ID: 421614). Currently connected to chain ID: ${network.chainId}`);
+        throw new Error(`Please switch to Story Aeneid Testnet Network (ID: 1315). Currently connected to chain ID: ${network.chainId}`);
       }
 
       // 3. First create the company in our backend
